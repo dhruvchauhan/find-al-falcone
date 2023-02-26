@@ -1,0 +1,37 @@
+<div class="container-fluid ms-5">
+  <div class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="row m-3">
+    <section class="col-md-2 col-sm-12 mx-3" *ngFor="let count of totalVehicles; let index = index ">
+      <div class="card p-2">
+        <p class="fw-bold">Destination {{ count }}</p>
+        <select class="form-select" (change)="onPlanetChange($event, index)">
+          <option *ngIf="!selectedPlanets[index];else selectedPlanetTemplate">--Select planet-- </option>
+          <ng-template #selectedPlanetTemplate>
+            <option>{{selectedPlanets[index]}}</option>
+          </ng-template>
+          <option class="form-control" *ngFor="let planet of planets" [value]="planet.name">
+            {{planet.name}}
+          </option>
+        </select>
+        <div class="form-control mt-3 d-none" [attr.id]="'vehicles' + ( index )">
+          <div class="form-check" *ngFor="let vehicle of vehicles; let vindex = index;">
+            <input class="form-check-input" type="radio" [attr.id]="'vehicle-' + count + '-' + vindex"
+              [attr.name]="'vehicle' + ( index )" (change)="onVehicleChange(vehicle, index)"
+              [disabled]="vehicle.total_no == 0" [value]="vehicle | json" />
+            <label class="form-check-label" [attr.for]="'vehicle-' + count + '-' + vindex">
+              <span>{{vehicle.name | titlecase}} ({{vehicle.total_no}})</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+    <aside class="col-md-2 col-sm-12 d-flex">
+      <div class="fw-bold fs-5">Time taken: {{totalTimeTaken}}</div>
+    </aside>
+  </div>
+</div>
+<div class="d-flex justify-content-center mb-5">
+  <button class="m-3 btn btn-primary p-3 px-5" [disabled]="(selectedVehicles.length < 4)" (click)="findFalcone()">
+    Find Falcone
+  </button>
+</div>

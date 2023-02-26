@@ -1,0 +1,30 @@
+<div *ngIf="!findingFalcone; else loadingTemplate" class="d-flex justify-content-center fs-4 m-5 flex-column">
+  <ng-container *ngIf="error; else successTemplate">
+    <div class="text-danger d-flex justify-content-center">{{statusMessage}}</div>
+  </ng-container>
+  <ng-template #successTemplate>
+    <ng-container *ngIf="statusMessage">
+      <div class="text-success">
+        Success! Congratulation on Finding Falcone. King Shan is mighty pleased.
+      </div>
+      <div class="text-secondary mt-4 border border-4 border-success p-4" *ngIf="timeTaken$ | async as params">
+        <div>Time taken: {{params['timeTaken']}}</div>
+        <div>Planet found: {{statusMessage}}</div>
+      </div>
+    </ng-container>
+  </ng-template>
+  <div class="d-flex justify-content-center mt-5">
+    <button class="btn btn-primary p-3 px-5 m-3" [routerLink]="['/find-falcone']">Start Again</button>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="d-flex vh-100 align-items-center justify-content-center">
+    <div class="d-flex flex-column align-items-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div>Finding Falcone...please wait</div>
+    </div>
+  </div>
+</ng-template>
